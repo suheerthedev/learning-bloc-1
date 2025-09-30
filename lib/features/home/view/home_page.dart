@@ -28,9 +28,21 @@ class _HomeState extends State<Home> {
             ),
             actionsPadding: EdgeInsets.symmetric(horizontal: 8),
             actions: [
-              Icon(Icons.shopping_cart_outlined, color: Colors.white),
+              IconButton(
+                onPressed: () {
+                  homeBloc.add(HomeCartButtonPressed());
+                },
+                icon: Icon(Icons.shopping_cart_outlined),
+                color: Colors.white,
+              ),
               const SizedBox(width: 20),
-              Icon(Icons.favorite_border, color: Colors.white),
+              IconButton(
+                onPressed: () {
+                  homeBloc.add(HomeWishlistButtonPressed());
+                },
+                icon: Icon(Icons.favorite_border),
+                color: Colors.white,
+              ),
             ],
           ),
           body: SafeArea(
