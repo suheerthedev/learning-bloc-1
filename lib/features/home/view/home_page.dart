@@ -19,7 +19,10 @@ class _HomeState extends State<Home> {
       buildWhen: (previous, current) => current is! HomeActionState,
       listener: (context, state) {
         if (state is HomeNavigateToCartPageActionState) {
-        } else if (state is HomeNavigateToWishlistPageActionState) {}
+          Navigator.pushNamed(context, '/cart');
+        } else if (state is HomeNavigateToWishlistPageActionState) {
+          Navigator.pushNamed(context, '/wishlist');
+        }
       },
       builder: (context, state) {
         return Scaffold(
