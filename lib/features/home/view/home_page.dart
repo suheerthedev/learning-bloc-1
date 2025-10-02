@@ -15,9 +15,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(
       bloc: homeBloc,
-      // listenWhen: (previous, current) {},
-      listener: (context, state) {},
-      // buildWhen: (previous, current) {},
+      listenWhen: (previous, current) => current is HomeActionState,
+      buildWhen: (previous, current) => current is! HomeActionState,
+      listener: (context, state) {
+        if (state is HomeNavigateToCartPageActionState) {
+        } else if (state is HomeNavigateToWishlistPageActionState) {}
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
