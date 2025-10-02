@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_bloc_1/app_router.dart';
+import 'package:learning_bloc_1/router/app_router.dart';
 import 'package:learning_bloc_1/features/home/view/home_page.dart';
 
 class App extends StatelessWidget {
