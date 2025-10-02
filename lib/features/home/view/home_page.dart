@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_bloc_1/features/home/bloc/home_bloc.dart';
+import 'package:learning_bloc_1/router/routes.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -19,9 +20,9 @@ class _HomeState extends State<Home> {
       buildWhen: (previous, current) => current is! HomeActionState,
       listener: (context, state) {
         if (state is HomeNavigateToCartPageActionState) {
-          Navigator.pushNamed(context, '/cart');
+          Navigator.pushNamed(context, Routes.cartRoute);
         } else if (state is HomeNavigateToWishlistPageActionState) {
-          Navigator.pushNamed(context, '/wishlist');
+          Navigator.pushNamed(context, Routes.wishlistRoute);
         }
       },
       builder: (context, state) {
