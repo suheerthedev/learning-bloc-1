@@ -22,7 +22,7 @@ class GroceryData {
       "description": "Juicy red tomato, great for salads",
       "price": 66.6,
       "imageUrl":
-          "https://www.gustagarden.com/cdn/shop/files/Gusta-Garden_hellfrucht.png?v=1705654017",
+          "https://cdn.mos.cms.futurecdn.net/v2/t:0,l:0,cw:1600,ch:1200,q:80,w:1600/5Zj8KDV8J6m5B79fAFBaGe.jpg",
     },
   ];
 }
