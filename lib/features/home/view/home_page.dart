@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_bloc_1/features/home/bloc/home_bloc.dart';
+import 'package:learning_bloc_1/features/home/widgets/product_card.dart';
 import 'package:learning_bloc_1/router/routes.dart';
 
 class Home extends StatefulWidget {
@@ -12,107 +13,92 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final HomeBloc homeBloc = HomeBloc();
+
+  @override
+  void initState() {
+    homeBloc.add(HomeInitialEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeBloc, HomeState>(
-      bloc: homeBloc,
-      listenWhen: (previous, current) => current is HomeActionState,
-      buildWhen: (previous, current) => current is! HomeActionState,
-      listener: (context, state) {
-        if (state is HomeNavigateToCartPageActionState) {
-          Navigator.pushNamed(context, Routes.cartRoute);
-        } else if (state is HomeNavigateToWishlistPageActionState) {
-          Navigator.pushNamed(context, Routes.wishlistRoute);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blue,
-            title: Text(
-              'Suheer Grocery App',
-              style: TextStyle(color: Colors.white),
-            ),
-            actionsPadding: EdgeInsets.symmetric(horizontal: 8),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  homeBloc.add(HomeCartButtonPressed());
-                },
-                icon: Icon(Icons.shopping_cart_outlined),
-                color: Colors.white,
-              ),
-              const SizedBox(width: 20),
-              IconButton(
-                onPressed: () {
-                  homeBloc.add(HomeWishlistButtonPressed());
-                },
-                icon: Icon(Icons.favorite_border),
-                color: Colors.white,
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        title: Text(
+          'Suheer Grocery App',
+          style: TextStyle(color: Colors.white),
+        ),
+        actionsPadding: EdgeInsets.symmetric(horizontal: 8),
+        actions: [
+          IconButton(
+            onPressed: () {
+              homeBloc.add(HomeCartButtonPressed());
+            },
+            icon: Icon(Icons.shopping_cart_outlined),
+            color: Colors.white,
           ),
-          body: SafeArea(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: double.infinity,
-                  height: 280,
-                  margin: EdgeInsets.all(16),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.yellow,
-                          borderRadius: BorderRadius.circular(25),
+          const SizedBox(width: 20),
+          IconButton(
+            onPressed: () {
+              homeBloc.add(HomeWishlistButtonPressed());
+            },
+            icon: Icon(Icons.favorite_border),
+            color: Colors.white,
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: BlocConsumer<HomeBloc, HomeState>(
+          bloc: homeBloc,
+          listenWhen: (previous, current) => current is HomeActionState,
+          buildWhen: (previous, current) => current is! HomeActionState,
+          listener: (context, state) {
+            if (state is HomeNavigateToCartPageActionState) {
+              Navigator.pushNamed(context, Routes.cartRoute);
+            } else if (state is HomeNavigateToWishlistPageActionState) {
+              Navigator.pushNamed(context, Routes.wishlistRoute);
+            }
+          },
+          builder: (context, state) {
+            switch (state.runtimeType) {
+              case HomeLoadingState:
+                return Center(
+                  child: CircularProgressIndicator(color: Colors.teal),
+                );
+              case HomeErrorState:
+                return Center(
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(color: Colors.red),
+                    child: Center(
+                      child: Text(
+                        "Error",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Product Name',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.shopping_cart_outlined,
-                                  color: Colors.white,
-                                ),
-                                const SizedBox(width: 20),
-                                Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 );
-              },
-            ),
-          ),
-        );
-      },
+              case HomeLoadSuccessState:
+                final successState = state as HomeLoadSuccessState;
+                return ListView.builder(
+                  itemCount: successState.product.length,
+                  itemBuilder: (context, index) {
+                    final product = successState.product[index];
+                    return ProductCard(product: product);
+                  },
+                );
+              default:
+                return const SizedBox.shrink();
+            }
+          },
+        ),
+      ),
     );
   }
 }
