@@ -17,6 +17,8 @@ final class HomeLoadSuccessState extends HomeState {
 
 final class HomeErrorState extends HomeState {}
 
+
+
 //Action State
 
 final class HomeNavigateToWishlistPageActionState extends HomeActionState {}
