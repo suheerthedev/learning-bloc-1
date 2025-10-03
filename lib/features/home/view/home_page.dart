@@ -58,6 +58,20 @@ class _HomeState extends State<Home> {
               Navigator.pushNamed(context, Routes.cartRoute);
             } else if (state is HomeNavigateToWishlistPageActionState) {
               Navigator.pushNamed(context, Routes.wishlistRoute);
+            } else if (state is HomeProductCartedActionState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Product Carted!'),
+                  duration: Duration(milliseconds: 300),
+                ),
+              );
+            } else if (state is HomeProductWishlistedActionState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Product Wishlisted!'),
+                  duration: Duration(milliseconds: 300),
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -90,7 +104,7 @@ class _HomeState extends State<Home> {
                   itemCount: successState.product.length,
                   itemBuilder: (context, index) {
                     final product = successState.product[index];
-                    return ProductCard(product: product);
+                    return ProductCard(product: product, homeBloc: homeBloc);
                   },
                 );
               default:

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:learning_bloc_1/data/models/product_model.dart';
+import 'package:learning_bloc_1/features/home/bloc/home_bloc.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
-  const ProductCard({super.key, required this.product});
+  final HomeBloc homeBloc;
+  const ProductCard({super.key, required this.product, required this.homeBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +61,27 @@ class ProductCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                    IconButton(
+                      onPressed: () {
+                        homeBloc.add(
+                          HomeProductCartButtonPressed(cartItem: product),
+                        );
+                      },
+                      icon: Icon(Icons.shopping_cart_outlined),
+                      color: Colors.white,
+                    ),
                     const SizedBox(width: 20),
-                    Icon(Icons.favorite_border, color: Colors.white),
+                    IconButton(
+                      onPressed: () {
+                        homeBloc.add(
+                          HomeProductWishlistButtonPressed(
+                            wishlistItem: product,
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.favorite_border),
+                      color: Colors.white,
+                    ),
                   ],
                 ),
               ],
