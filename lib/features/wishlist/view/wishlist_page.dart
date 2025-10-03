@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_bloc_1/data/wishlist_items.dart';
 import 'package:learning_bloc_1/features/wishlist/bloc/wishlist_bloc.dart';
 import 'package:learning_bloc_1/features/wishlist/widgets/wishlist_product_card.dart';
 
